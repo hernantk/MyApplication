@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navMap"
+        android:icon="@drawable/ic_baseline_map_24"
+        android:title="@string/title_maps" />
+
+    <item
+        android:id="@+id/navMemory"
+        android:icon="@drawable/ic_camera"
+        android:title="@string/title_memory" />
+
+
+
+</menu>
