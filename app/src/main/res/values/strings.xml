@@ -4,4 +4,15 @@
     <string name="title_memory">Memória</string>
 
     <string name="title_item_memory">%s em %s</string>
+
+
+
+    <string name="btn_camera">Câmera</string>
+    <string name="btn_galeria">Galeria</string>
+    <string name="btn_other_location">Usar Outra Localização</string>
+
+    <string name="title_city">Cidade</string>
+    <string name="title_description">Descrição</string>
+
+    <string name="title_local">Localização:</string>
 </resources>
