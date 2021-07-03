@@ -17,13 +17,27 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/tvTile"
-        android:layout_width="0dp"
+        android:id="@+id/tvTitleDate"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/title_item_memory"
-        app:layout_constraintEnd_toEndOf="@+id/imgCamera"
+        android:layout_marginEnd="16dp"
+        android:text="@string/title_item_memory_date"
+        app:layout_constraintEnd_toStartOf="@+id/tvTitleCity"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/imgCamera"
+        app:layout_constraintTop_toBottomOf="@+id/imgCamera" />
+
+    <TextView
+        android:id="@+id/tvTitleCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="272dp"
+        android:text="@string/title_item_memory_city"
+        app:layout_constraintEnd_toEndOf="@+id/imgCamera"
+        app:layout_constraintStart_toEndOf="@+id/tvTitleDate"
         app:layout_constraintTop_toBottomOf="@+id/imgCamera" />
 
     <TextView
@@ -31,11 +45,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:text="askd´psadlspfk´rogo´´kogéd´kpfgrw´kpfr´kpwp´kfekwppkgtlegprkgorekgoerkgpoerkgpreokgregkprekgprekgporekgporekgperpogrekogrekgporekgprekgrppkgrpogkrpgkprekgreokp"
-        app:layout_constraintEnd_toEndOf="@+id/tvTile"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="@+id/tvTile"
-        app:layout_constraintTop_toBottomOf="@+id/tvTile" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvTitleDate"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitleDate" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

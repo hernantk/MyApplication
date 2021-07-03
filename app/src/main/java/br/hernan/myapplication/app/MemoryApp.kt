@@ -1,6 +1,8 @@
 package br.hernan.myapplication.app
 
 import android.app.Application
+import br.hernan.myapplication.di.repositoryModule
+import br.hernan.myapplication.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -14,7 +16,8 @@ class MemoryApp:Application() {
             androidLogger()
             androidContext(applicationContext)
             modules(
-
+                viewModelModule,
+                repositoryModule
 
             )
         }

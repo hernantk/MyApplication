@@ -4,41 +4,62 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import br.hernan.myapplication.databinding.FragmentHomeBinding
+import br.hernan.myapplication.R
+import br.hernan.myapplication.databinding.FragmentMapsBinding
+import com.google.android.gms.location.*
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MapsFragment : Fragment() {
+class MapsFragment : Fragment(),OnMapReadyCallback {
 
-    private lateinit var mapsViewModel: MapsViewModel
-    private var _binding: FragmentHomeBinding? = null
+    private val binding: FragmentMapsBinding by lazy{
+        FragmentMapsBinding.inflate(layoutInflater)
+    }
+    private val viewModel: MapsViewModel by viewModel()
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    private lateinit var mMap: GoogleMap
+    private lateinit var mLocationClient : FusedLocationProviderClient
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        mapsViewModel =
-            ViewModelProvider(this).get(MapsViewModel::class.java)
+    ) = binding.root
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        mapsViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setupMap()
+
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+
+
+    private fun setupMap(){
+        val mapFragment =childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
+        mapFragment.getMapAsync(this)
     }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+
+        mMap.setOnMapClickListener { location ->
+            addMarker(location.latitude,location.longitude)
+        }
+        // Add a marker in Sydney and move the camera
+        addMarker(-26.078572,-53.0516805)
+    }
+    private fun addMarker(latitude:Double,longitude:Double){
+        mMap.clear()
+        val point = LatLng(latitude,longitude)
+        mMap.addMarker(MarkerOptions().position(point))
+    }
+
+
 }

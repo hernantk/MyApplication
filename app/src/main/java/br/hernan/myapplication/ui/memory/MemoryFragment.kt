@@ -4,42 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import br.hernan.myapplication.databinding.FragmentDashboardBinding
 import br.hernan.myapplication.databinding.FragmentMemoryBinding
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MemoryFragment : Fragment() {
 
-    private lateinit var memoryViewModel: MemoryViewModel
-    private var _binding: FragmentMemoryBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    private val binding: FragmentMemoryBinding by lazy{
+        FragmentMemoryBinding.inflate(layoutInflater)
+    }
+    private val viewModel: MemoryViewModel by viewModel()
+    private val adapter:MemoryAdapter by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        memoryViewModel =
-            ViewModelProvider(this).get(MemoryViewModel::class.java)
+    )= binding.root
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textDashboard
-        memoryViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
 }

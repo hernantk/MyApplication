@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navMap"
+        android:id="@+id/navigationMaps"
         android:icon="@drawable/ic_baseline"
         android:title="@string/title_maps" />
 
     <item
-        android:id="@+id/navMemory"
+        android:id="@+id/navigationMemory"
         android:icon="@drawable/ic_camera"
         android:title="@string/title_memory" />
 
