@@ -1,6 +1,7 @@
 package br.hernan.myapplication.app
 
 import android.app.Application
+import br.hernan.myapplication.di.adapterModule
 import br.hernan.myapplication.di.repositoryModule
 import br.hernan.myapplication.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
@@ -17,7 +18,8 @@ class MemoryApp:Application() {
             androidContext(applicationContext)
             modules(
                 viewModelModule,
-                repositoryModule
+                repositoryModule,
+                adapterModule
 
             )
         }
