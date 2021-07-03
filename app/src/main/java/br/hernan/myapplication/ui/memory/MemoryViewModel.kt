@@ -13,7 +13,7 @@ class MemoryViewModel(private val repository: MemoryRepository) : ViewModel() {
         get() = mMemoryResult
 
 
-    fun listLogs(){
+    fun listMemory(){
         repository.findAll(
             mMemoryResult::postValue,
         )
