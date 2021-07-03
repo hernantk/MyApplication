@@ -1,13 +1,16 @@
 package br.hernan.myapplication
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import br.hernan.myapplication.databinding.ActivityMainBinding
+import br.hernan.myapplication.ui.newmemory.ActivityNewMemory
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,11 +38,16 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setupWithNavController(navController)
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == android.R.id.home){
-            onBackPressed()
+        if(item.itemId == R.id.btnAdd){
+            startActivity(ActivityNewMemory.newIntent(this))
             return true
         }
         return false
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_add,menu)
+        return true
     }
 
 

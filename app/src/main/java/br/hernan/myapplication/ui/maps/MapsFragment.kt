@@ -15,15 +15,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MapsFragment : Fragment(),OnMapReadyCallback {
+class MapsFragment : Fragment() {
 
     private val binding: FragmentMapsBinding by lazy{
         FragmentMapsBinding.inflate(layoutInflater)
     }
     private val viewModel: MapsViewModel by viewModel()
-
-    private lateinit var mMap: GoogleMap
-    private lateinit var mLocationClient : FusedLocationProviderClient
 
 
     override fun onCreateView(
@@ -33,33 +30,6 @@ class MapsFragment : Fragment(),OnMapReadyCallback {
     ) = binding.root
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setupMap()
-
-    }
-
-
-
-    private fun setupMap(){
-        val mapFragment =childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-    }
-
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-
-        mMap.setOnMapClickListener { location ->
-            addMarker(location.latitude,location.longitude)
-        }
-        // Add a marker in Sydney and move the camera
-        addMarker(-26.078572,-53.0516805)
-    }
-    private fun addMarker(latitude:Double,longitude:Double){
-        mMap.clear()
-        val point = LatLng(latitude,longitude)
-        mMap.addMarker(MarkerOptions().position(point))
-    }
 
 
 }

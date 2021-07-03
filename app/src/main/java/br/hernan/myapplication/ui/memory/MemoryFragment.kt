@@ -2,9 +2,12 @@ package br.hernan.myapplication.ui.memory
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import br.hernan.myapplication.R
 import br.hernan.myapplication.databinding.FragmentMemoryBinding
 import br.hernan.myapplication.domain.dto.MemoryDto
 import org.koin.android.ext.android.inject
@@ -35,6 +38,7 @@ class MemoryFragment : Fragment() {
 
 
 
+
     private fun setupEvents(){
         viewModel.memoryResult.observe(this){result -> onResultSuccess(result)}
 
@@ -42,7 +46,7 @@ class MemoryFragment : Fragment() {
 
     private fun setupList(){
         binding.rvMemory.adapter=adapter
-        binding.rvMemory.layoutManager=LinearLayoutManager(this)
+        binding.rvMemory.layoutManager=LinearLayoutManager(requireContext())
 
 }
     private fun onResultSuccess(memory:List<MemoryDto>){
