@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 data class MemoryDto(
     val id : String,
-    val date:LocalDate,
+    val date:String,
     val city:String,
     val description:String,
     val image: String

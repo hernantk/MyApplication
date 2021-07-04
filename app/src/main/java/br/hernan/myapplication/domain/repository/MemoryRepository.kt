@@ -14,21 +14,21 @@ class MemoryRepository(private val firestore: FirebaseFirestore) {
             .addOnSuccessListener { memorys ->
                 val result = memorys.map{ memory ->
                     MemoryDto(memory.id,
-                        LocalDate.parse(memory.getString("date")),
+                        LocalDate.parse(memory.getString("date")).toString(),
                         memory.getString("city")?:"",
                         memory.getString("description")?:"",
                         memory.getString("image")?:"")
+
                 }
                 onSuccess(result)
             }
 
     }
 
-    fun save(memory:RegisteMemoryDto,onSuccess:()-> Unit){
+    fun save(memory:RegisteMemoryDto){
 
         firestore.collection(COLLETION)
             .add(memory)
-            .addOnSuccessListener { onSuccess() }
     }
 
 

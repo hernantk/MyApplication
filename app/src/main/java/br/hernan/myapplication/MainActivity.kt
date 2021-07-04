@@ -1,5 +1,7 @@
 package br.hernan.myapplication
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -37,17 +39,9 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
     }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.btnAdd){
-            startActivity(ActivityNewMemory.newIntent(this))
-            return true
-        }
-        return false
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_add,menu)
-        return true
+    companion object {
+        fun newIntent(context: Context) = Intent(context, MainActivity::class.java)
     }
 
 

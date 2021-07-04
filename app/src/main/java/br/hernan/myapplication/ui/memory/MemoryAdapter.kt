@@ -1,5 +1,7 @@
 package br.hernan.myapplication.ui.memory
 
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,9 +25,15 @@ class MemoryAdapter:RecyclerView.Adapter<MemoryAdapter.MemoryViewHolder>() {
 
         fun bind(memory:MemoryDto){
             val dateFormater = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-            binding.tvTitleDate.text = memory.date.format(dateFormater)
-            binding.tvTitleCity.text = memory.city
+            binding.tvDate.text = memory.date.format(dateFormater)
+            binding.tvCity.text = memory.city
             binding.tvDescription.text = memory.description
+
+            val image = Base64.decode(memory.image,Base64.DEFAULT)
+            binding.imgCamera.setImageBitmap(BitmapFactory.decodeByteArray(image,0, image.size))
+
+
+
     }
 }
 

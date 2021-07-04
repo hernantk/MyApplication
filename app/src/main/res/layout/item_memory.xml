@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/imgCamera"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:layout_margin="16dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,39 +17,39 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/tvTitleDate"
+        android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="@string/title_item_memory_date"
-        app:layout_constraintEnd_toStartOf="@+id/tvTitleCity"
+        app:layout_constraintEnd_toStartOf="@+id/tvCity"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/imgCamera"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgCamera" />
 
     <TextView
-        android:id="@+id/tvTitleCity"
+        android:id="@+id/tvCity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="272dp"
         android:text="@string/title_item_memory_city"
         app:layout_constraintEnd_toEndOf="@+id/imgCamera"
-        app:layout_constraintStart_toEndOf="@+id/tvTitleDate"
         app:layout_constraintTop_toBottomOf="@+id/imgCamera" />
 
     <TextView
         android:id="@+id/tvDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="askd´psadlspfk´rogo´´kogéd´kpfgrw´kpfr´kpwp´kfekwppkgtlegprkgorekgoerkgpoerkgpreokgregkprekgprekgporekgporekgperpogrekogrekgporekgprekgrppkgrpogkrpgkprekgreokp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tvTitleDate"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitleDate" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
