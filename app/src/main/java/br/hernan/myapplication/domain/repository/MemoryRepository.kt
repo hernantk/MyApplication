@@ -33,7 +33,7 @@ class MemoryRepository(private val firestore: FirebaseFirestore) {
 
 
     companion object{
-        private const val COLLETION = "logs"
+        private const val COLLETION = "memory"
     }
     }
 
