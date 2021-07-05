@@ -48,7 +48,6 @@ class MemoryFragment : Fragment() {
 
     private fun setupEvents(){
         viewModel.memoryResult.observe(this){result -> onResultSuccess(result)}
-
     }
 
     private fun setupList(){

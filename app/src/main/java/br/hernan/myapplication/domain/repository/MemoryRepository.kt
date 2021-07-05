@@ -1,7 +1,8 @@
 package br.hernan.myapplication.domain.repository
 
 import br.hernan.myapplication.domain.dto.MemoryDto
-import br.hernan.myapplication.domain.dto.RegisteMemoryDto
+import br.hernan.myapplication.domain.dto.RegisterMemoryDto
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalDate
 
@@ -25,7 +26,23 @@ class MemoryRepository(private val firestore: FirebaseFirestore) {
 
     }
 
-    fun save(memory:RegisteMemoryDto){
+    fun findAllLocation(onSuccess: (List<LatLng>) -> Unit){
+
+        firestore.collection(COLLETION)
+            .get()
+            .addOnSuccessListener { location ->
+                val result = location.map{ local ->
+                    LatLng(
+                        local.getDouble("latitude")!!,
+                        local.getDouble("longitude")!!
+                    )
+                }
+                onSuccess(result)
+            }
+
+    }
+
+    fun save(memory:RegisterMemoryDto){
 
         firestore.collection(COLLETION)
             .add(memory)

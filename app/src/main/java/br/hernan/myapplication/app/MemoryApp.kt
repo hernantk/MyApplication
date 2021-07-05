@@ -19,7 +19,7 @@ class MemoryApp:Application() {
             modules(
                 viewModelModule,
                 repositoryModule,
-                adapterModule
+                adapterModule,
 
             )
         }

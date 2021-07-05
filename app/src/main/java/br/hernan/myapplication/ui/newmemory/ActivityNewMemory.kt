@@ -17,7 +17,7 @@ import androidx.core.view.drawToBitmap
 import br.hernan.myapplication.MainActivity
 import br.hernan.myapplication.R
 import br.hernan.myapplication.databinding.ActivityNewMemoryBinding
-import br.hernan.myapplication.domain.dto.RegisteMemoryDto
+import br.hernan.myapplication.domain.dto.RegisterMemoryDto
 import br.hernan.myapplication.ui.selectMap.ActivityMapsSelection
 import org.koin.android.ext.android.inject
 import java.io.ByteArrayOutputStream
@@ -82,12 +82,12 @@ class ActivityNewMemory : AppCompatActivity() {
 
 
     private fun saveMemory() {
-        viewModel.save(RegisteMemoryDto(
+        viewModel.save(RegisterMemoryDto(
             LocalDate.now().toString(),
             binding.etCity.text.toString(),
             binding.etDescription.text.toString(),
-            binding.tvLatitude.text.toString(),
-            binding.tvLongitude.text.toString()
+            binding.tvLatitude.text.toString().toDouble(),
+            binding.tvLongitude.text.toString().toDouble()
             ,convertImage()))
     }
 
