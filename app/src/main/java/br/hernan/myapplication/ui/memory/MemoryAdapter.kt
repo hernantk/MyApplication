@@ -25,7 +25,7 @@ class MemoryAdapter:RecyclerView.Adapter<MemoryAdapter.MemoryViewHolder>() {
 
         fun bind(memory:MemoryDto){
             val dateFormater = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-            binding.tvDate.text = memory.date.format(dateFormater)
+            binding.tvDate.text = memory.date.format(dateFormater).toString()
             binding.tvCity.text = memory.city
             binding.tvDescription.text = memory.description
 

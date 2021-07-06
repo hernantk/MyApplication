@@ -19,6 +19,7 @@ import br.hernan.myapplication.R
 import br.hernan.myapplication.databinding.ActivityNewMemoryBinding
 import br.hernan.myapplication.domain.dto.RegisterMemoryDto
 import br.hernan.myapplication.ui.selectMap.ActivityMapsSelection
+import com.google.android.gms.maps.model.LatLng
 import org.koin.android.ext.android.inject
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -58,17 +59,7 @@ class ActivityNewMemory : AppCompatActivity() {
         return true
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 1 && resultCode == RESULT_OK){
-        binding.imgCameraNewMemory.setImageURI(data?.data)
-        }
-        if (requestCode == 2 && resultCode == RESULT_OK){
-            binding.tvLatitude.text = data?.extras?.get("LATITUDE").toString()
-            binding.tvLongitude.text = data?.extras?.get("LONGITUDE").toString()
-        }
-    }
 
     private fun setupEvents(){
         binding.btnGoCamera.setOnClickListener{takePicture()}
@@ -82,15 +73,18 @@ class ActivityNewMemory : AppCompatActivity() {
 
 
     private fun saveMemory() {
-        viewModel.save(RegisterMemoryDto(
+        viewModel.save(getRegisterMemoryDto())
+    }
+
+    private fun getRegisterMemoryDto():RegisterMemoryDto{
+        return RegisterMemoryDto(
             LocalDate.now().toString(),
             binding.etCity.text.toString(),
             binding.etDescription.text.toString(),
             binding.tvLatitude.text.toString().toDouble(),
             binding.tvLongitude.text.toString().toDouble()
-            ,convertImage()))
+            ,convertImage())
     }
-
     private fun convertImage(): String {
         val byteArrayOutputStream = ByteArrayOutputStream()
         val image = binding.imgCameraNewMemory.drawToBitmap()
@@ -98,7 +92,6 @@ class ActivityNewMemory : AppCompatActivity() {
         return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
 
     }
-
 
     private fun getLatitude():String {
         return (intent.extras?.getDouble("LATITUDE") ?: 0.0).toString()
@@ -108,13 +101,22 @@ class ActivityNewMemory : AppCompatActivity() {
     }
 
     private fun selectImageInAlbum() {
-        val intent = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent,1)
+        startActivityForResult(Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI),1)
     }
-
     private fun selectLocation() {
-        val intent = Intent(this,ActivityMapsSelection::class.java)
-        startActivityForResult(intent,2)
+        startActivityForResult(Intent(this,ActivityMapsSelection::class.java),2)
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 1 && resultCode == RESULT_OK){
+            binding.imgCameraNewMemory.setImageURI(data?.data)
+        }
+        if (requestCode == 2 && resultCode == RESULT_OK){
+            val point : LatLng = data?.extras?.get("POINT") as LatLng
+            binding.tvLatitude.text = point.latitude.toString()
+            binding.tvLongitude.text = point.longitude.toString()
+        }
     }
 
     private fun takePicture() {
@@ -128,15 +130,11 @@ class ActivityNewMemory : AppCompatActivity() {
 
         this.pictureUri =
             FileProvider.getUriForFile(this, "br.edu.unisep.myapplication.fileprovider", pictureFile)
-
-
     }
     private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { pictureTaken ->
         if (pictureTaken) {
             binding.imgCameraNewMemory.setImageURI(this.pictureUri)
 
-        } else {
-            binding.imgCameraNewMemory.setImageURI(null)
         }
     }
 

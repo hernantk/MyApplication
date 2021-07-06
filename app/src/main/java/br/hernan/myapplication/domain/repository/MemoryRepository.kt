@@ -15,7 +15,7 @@ class MemoryRepository(private val firestore: FirebaseFirestore) {
             .addOnSuccessListener { memorys ->
                 val result = memorys.map{ memory ->
                     MemoryDto(memory.id,
-                        LocalDate.parse(memory.getString("date")).toString(),
+                        LocalDate.parse(memory.getString("date")),
                         memory.getString("city")?:"",
                         memory.getString("description")?:"",
                         memory.getString("image")?:"")
@@ -43,7 +43,6 @@ class MemoryRepository(private val firestore: FirebaseFirestore) {
     }
 
     fun save(memory:RegisterMemoryDto){
-
         firestore.collection(COLLETION)
             .add(memory)
     }

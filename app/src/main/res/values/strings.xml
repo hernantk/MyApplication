@@ -3,8 +3,8 @@
     <string name="title_maps">Maps</string>
     <string name="title_memory">Memória</string>
 
-    <string name="title_item_memory_date">%s em</string>
-    <string name="title_item_memory_city">%s</string>
+    <string name="title_item_memory_date">22/10/2020</string>
+    <string name="title_item_memory_city">em %s</string>
 
 
 

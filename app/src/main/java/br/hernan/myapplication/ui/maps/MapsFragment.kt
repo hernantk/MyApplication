@@ -65,7 +65,6 @@ class MapsFragment( ) : Fragment(), OnMapReadyCallback {
 
     }
 
-
     private fun setupMap(){
         binding.map.onCreate(null)
         binding.map.onResume()
@@ -76,10 +75,9 @@ class MapsFragment( ) : Fragment(), OnMapReadyCallback {
         mMap = googleMap
 
         mMap.setOnMapClickListener { location ->
+            addMarker(location.latitude,location.longitude)
             longitude=location.longitude
             latitude=location.latitude
-            addMarker(latitude,longitude)
-
         }
         viewModel.locationResult.observe(viewLifecycleOwner){local -> local.forEach{l->addMarker(l)} }
         mMap.setOnMapLoadedCallback { googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition(LatLng(latitude, longitude),12f,0f,0f))) }
@@ -108,8 +106,7 @@ class MapsFragment( ) : Fragment(), OnMapReadyCallback {
         override fun onLocationResult(result: LocationResult) {
             longitude=result.lastLocation.longitude
             latitude=result.lastLocation.latitude
-            addMarker(longitude,latitude)
-
+            addMarker(result.lastLocation.longitude,result.lastLocation.latitude)
         }
 
     }
@@ -124,7 +121,7 @@ class MapsFragment( ) : Fragment(), OnMapReadyCallback {
     private fun requestLocationUpdates(){
         val locationRequest = LocationRequest.create().apply {
             interval = 15000
-            fastestInterval = 200
+            fastestInterval = 3000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 

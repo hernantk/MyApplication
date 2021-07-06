@@ -32,8 +32,8 @@ class ActivityMapsSelection : AppCompatActivity(),OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var mLocationClient : FusedLocationProviderClient
 
-    private var latitude: Double = -53.05404603481293
-    private var longitude: Double = -26.074973855427512
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
 
 
 
@@ -79,10 +79,7 @@ class ActivityMapsSelection : AppCompatActivity(),OnMapReadyCallback {
     }
 
     private fun setLocation(point:LatLng){
-        val location = Intent()
-        location.putExtra("LATITUDE",point.latitude)
-        location.putExtra("LONGITUDE",point.longitude)
-        setResult(RESULT_OK,location)
+        setResult(RESULT_OK,Intent().putExtra("POINT",point))
         finish()
     }
 
