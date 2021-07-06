@@ -30,7 +30,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private val viewModel: MapsViewModel by viewModel()
     private lateinit var mMap: GoogleMap
     private lateinit var mLocationClient : FusedLocationProviderClient
-
     private lateinit var point: LatLng
 
     override fun onCreateView(
@@ -74,16 +73,13 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         mMap = googleMap
 
         mMap.setOnMapClickListener { location ->
-            addMarker(location.latitude,location.longitude)
             refreshPoint(location.latitude,location.longitude)
+            addMarker(point)
         }
         viewModel.locationResult.observe(viewLifecycleOwner){local -> local.forEach{l->addMarker(l)} }
 
     }
-    private fun addMarker(latitude:Double,longitude:Double){
-        val point = LatLng(latitude,longitude)
-        mMap.addMarker(MarkerOptions().position(point))
-    }
+
     private fun addMarker(point: LatLng){
         mMap.addMarker(MarkerOptions().position(point))
     }

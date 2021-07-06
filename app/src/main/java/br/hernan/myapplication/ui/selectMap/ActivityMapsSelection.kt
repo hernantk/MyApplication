@@ -8,16 +8,13 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
 import android.view.*
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import br.hernan.myapplication.R
 import br.hernan.myapplication.databinding.FragmentMapsBinding
-import br.hernan.myapplication.ui.newmemory.ActivityNewMemory
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -31,9 +28,7 @@ class ActivityMapsSelection : AppCompatActivity(),OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var mLocationClient : FusedLocationProviderClient
-
-    private var latitude: Double = 0.0
-    private var longitude: Double = 0.0
+    private lateinit var point: LatLng
 
 
 
@@ -42,16 +37,14 @@ class ActivityMapsSelection : AppCompatActivity(),OnMapReadyCallback {
         setContentView(binding.root)
         setupMap()
     }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_confirm, menu)
         return true
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.btnConfirm -> {
-                setLocation(LatLng(latitude, longitude))
+                savePointGoNewMemory(LatLng(point.latitude, point.longitude))
             }
         }
         return true }
@@ -63,22 +56,16 @@ class ActivityMapsSelection : AppCompatActivity(),OnMapReadyCallback {
         binding.map.getMapAsync(this)
         setupLocationClient()
     }
-
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
         mMap.setOnMapClickListener { location ->
-            longitude=location.longitude
-            latitude=location.latitude
-            addMarker(latitude,longitude)
-        }
-        mMap.setOnMapLoadedCallback { googleMap.moveCamera(
-            CameraUpdateFactory.newCameraPosition(
-                CameraPosition(LatLng(latitude, longitude),12f,0f,0f)
-            )) }
-    }
+            refreshPoint(location.latitude,location.longitude)
+            addMarker(point)
+        } }
 
-    private fun setLocation(point:LatLng){
+
+    private fun savePointGoNewMemory(point:LatLng){
         setResult(RESULT_OK,Intent().putExtra("POINT",point))
         finish()
     }
@@ -92,8 +79,6 @@ class ActivityMapsSelection : AppCompatActivity(),OnMapReadyCallback {
         ){
             requestLocationUpdates()
         } }
-
-
     @SuppressLint("MissingPermission")
     private fun requestLocationUpdates(){
         val locationRequest = LocationRequest.create().apply {
@@ -107,25 +92,22 @@ class ActivityMapsSelection : AppCompatActivity(),OnMapReadyCallback {
             mLocationCallback,
             Looper.getMainLooper())
     }
-
-
-
     private val mLocationCallback = object: LocationCallback(){
 
 
         override fun onLocationResult(result: LocationResult) {
             mMap.clear()
-            longitude=result.lastLocation.longitude
-            latitude=result.lastLocation.latitude
-            addMarker(latitude,longitude)
-            mLocationClient.removeLocationUpdates(this)
+            refreshPoint(result.lastLocation.latitude,result.lastLocation.longitude)
+            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition(LatLng(point.latitude, point.longitude),12f,0f,0f)))
+            addMarker(point)
         }
     }
 
-
-    private fun addMarker(latitude:Double,longitude:Double){
+    private fun refreshPoint(latitude: Double,longitude: Double){
+        point= LatLng(latitude,longitude)
+    }
+    private fun addMarker(point: LatLng){
         mMap.clear()
-        val point = LatLng(latitude,longitude)
         mMap.addMarker(MarkerOptions().position(point))
     }
 }
