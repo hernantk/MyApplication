@@ -8,7 +8,7 @@ import java.time.LocalDate
 
 class MemoryRepository(private val firestore: FirebaseFirestore) {
 
-    fun findAll(onSuccess: (List<MemoryDto>) -> Unit){
+    fun findAllMemory(onSuccess: (List<MemoryDto>) -> Unit){
 
         firestore.collection(COLLETION)
             .get()

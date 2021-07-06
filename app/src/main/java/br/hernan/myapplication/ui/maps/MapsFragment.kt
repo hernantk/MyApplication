@@ -17,12 +17,11 @@ import com.google.android.gms.location.*
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MapsFragment( ) : Fragment(), OnMapReadyCallback {
+class MapsFragment : Fragment(), OnMapReadyCallback {
 
     private val binding: FragmentMapsBinding by lazy{
         FragmentMapsBinding.inflate(layoutInflater)
@@ -32,8 +31,7 @@ class MapsFragment( ) : Fragment(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var mLocationClient : FusedLocationProviderClient
 
-    private var latitude: Double = -53.05404603481293
-    private var longitude: Double = -26.074973855427512
+    private lateinit var point: LatLng
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +52,7 @@ class MapsFragment( ) : Fragment(), OnMapReadyCallback {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.btnAdd -> {
-               save(LatLng(latitude,longitude)) } }
+               savePointGoNewMemory(LatLng(point.latitude,point.longitude)) } }
         return true }
 
 
@@ -64,6 +62,7 @@ class MapsFragment( ) : Fragment(), OnMapReadyCallback {
         setupLocationClient()
 
     }
+
 
     private fun setupMap(){
         binding.map.onCreate(null)
@@ -76,47 +75,43 @@ class MapsFragment( ) : Fragment(), OnMapReadyCallback {
 
         mMap.setOnMapClickListener { location ->
             addMarker(location.latitude,location.longitude)
-            longitude=location.longitude
-            latitude=location.latitude
+            refreshPoint(location.latitude,location.longitude)
         }
         viewModel.locationResult.observe(viewLifecycleOwner){local -> local.forEach{l->addMarker(l)} }
-        mMap.setOnMapLoadedCallback { googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition(LatLng(latitude, longitude),12f,0f,0f))) }
 
     }
     private fun addMarker(latitude:Double,longitude:Double){
         val point = LatLng(latitude,longitude)
         mMap.addMarker(MarkerOptions().position(point))
     }
-
     private fun addMarker(point: LatLng){
         mMap.addMarker(MarkerOptions().position(point))
     }
-
-
-    private fun save(point:LatLng){
+    private fun savePointGoNewMemory(point:LatLng){
         val bundle = Bundle()
         bundle.putDouble("LATITUDE",point.latitude)
         bundle.putDouble("LONGITUDE",point.longitude)
         val intent = Intent(requireContext(),ActivityNewMemory::class.java).putExtras(bundle)
         startActivity(intent)
     }
+    private fun refreshPoint(latitude: Double,longitude: Double){
+        point= LatLng(latitude,longitude)
+    }
 
     private val mLocationCallback = object: LocationCallback(){
 
         override fun onLocationResult(result: LocationResult) {
-            longitude=result.lastLocation.longitude
-            latitude=result.lastLocation.latitude
-            addMarker(result.lastLocation.longitude,result.lastLocation.latitude)
+            refreshPoint(result.lastLocation.latitude,result.lastLocation.longitude)
+            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition(LatLng(point.latitude, point.longitude),12f,0f,0f)))
+            addMarker(point)
         }
 
     }
-
     private val permissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()){ granted->
         if(granted==true){
             requestLocationUpdates()
         }
     }
-
     @SuppressLint("MissingPermission")
     private fun requestLocationUpdates(){
         val locationRequest = LocationRequest.create().apply {
@@ -130,7 +125,6 @@ class MapsFragment( ) : Fragment(), OnMapReadyCallback {
             mLocationCallback,
             Looper.getMainLooper())
     }
-
     private fun setupLocationClient(){
         mLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 

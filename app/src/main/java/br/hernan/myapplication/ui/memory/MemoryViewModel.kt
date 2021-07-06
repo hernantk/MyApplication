@@ -14,7 +14,7 @@ class MemoryViewModel(private val repository: MemoryRepository) : ViewModel() {
 
 
     fun listMemory(){
-        repository.findAll(
+        repository.findAllMemory(
             mMemoryResult::postValue,
         )
 
